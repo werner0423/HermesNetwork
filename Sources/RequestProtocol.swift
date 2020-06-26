@@ -66,6 +66,9 @@ public protocol RequestProtocol {
 	
 	/// Optional headers to append to the request.
 	var headers: HeadersDict? { get set }
+    
+    /// If exists, will override service's responseValidater
+    var responseValidater: ResponseValidater? { get set }
 	
 	/// This is the default cache policy used for this request.
 	/// If not set related `Service` policy is used.
@@ -123,7 +126,7 @@ public extension RequestProtocol {
 		return url
 	}
 	
-	public func urlRequest(in service: ServiceProtocol) throws -> URLRequest {
+    func urlRequest(in service: ServiceProtocol) throws -> URLRequest {
 		// Compose default full url
 		let requestURL = try self.url(in: service)
 		// Setup cache policy, timeout and headers of the request

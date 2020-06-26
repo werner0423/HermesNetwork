@@ -34,9 +34,9 @@ public extension Dictionary where Key == String, Value == Any? {
 	/// - Parameter base: base url
 	/// - Returns: encoded string
 	/// - Throws: throw `.dataIsNotEncodable` if data cannot be encoded
-	public func urlEncodedString(base: String = "") throws -> String {
+    func urlEncodedString(base: String = "") throws -> String {
 		guard self.count > 0 else { return "" } // nothing to encode
-		let items: [URLQueryItem] = self.flatMap { (key,value) in
+        let items: [URLQueryItem] = self.compactMap { (key,value) in
 			guard let v = value else { return nil } // skip item if no value is set
 			return URLQueryItem(name: key, value: String(describing: v))
 		}
@@ -56,7 +56,7 @@ public extension String {
 	///
 	/// - Parameter dict: dict to use
 	/// - Returns: replaced string
-	public func fill(withValues dict: [String: Any?]?) -> String {
+    func fill(withValues dict: [String: Any?]?) -> String {
 		guard let data = dict else {
 			return self
 		}
@@ -69,7 +69,7 @@ public extension String {
 		return finalString
 	}
 	
-	public func stringByAdding(urlEncodedFields fields: ParametersDict?) throws -> String {
+    func stringByAdding(urlEncodedFields fields: ParametersDict?) throws -> String {
 		guard let f = fields else { return self }
 		return try f.urlEncodedString(base: self)
 	}

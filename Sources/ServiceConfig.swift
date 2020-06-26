@@ -38,6 +38,18 @@ public final class ServiceConfig: CustomStringConvertible, Equatable {
 	
 	/// These are the global headers which must be included in each session of the service
 	private(set) var headers: HeadersDict = [:]
+    
+    /// allows each request made on service to be inspected and adapted
+    /// One very specific way to use an adapter is to append an Authorization header to requests behind a certain type of authentication.
+    public var requestAdapters: [RequestAdapter] = []
+    
+    /// Filter the response
+    /// can be used for common error handler, log...
+    public var responseFilters: [ResponseFilter] = []
+    
+    /// Validate the response
+    public var responseValidater: ResponseValidater?
+
 	
 	/// Cache policy you want apply to each request done with this service
 	/// By default is `.useProtocolCachePolicy`.
@@ -98,4 +110,14 @@ public final class ServiceConfig: CustomStringConvertible, Equatable {
 	public static func ==(lhs: ServiceConfig, rhs: ServiceConfig) -> Bool {
 		return lhs.url.absoluteString.lowercased() == rhs.url.absoluteString.lowercased()
 	}
+    
+    
+    public func addResponseFilter(_ filter: @escaping ResponseFilter) {
+        responseFilters.append(filter)
+    }
+    
+    public func addRequestAdapter(_ adapter: @escaping RequestAdapter) {
+        requestAdapters.append(adapter)
+    }
+
 }

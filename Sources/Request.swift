@@ -51,6 +51,10 @@ public class Request: RequestProtocol {
 	
 	/// Headers of the request
 	public var headers: HeadersDict?
+    
+    /// If exists, will override service's responseValidater
+    public var responseValidater: ResponseValidater?
+
 	
 	/// Cache policy
 	public var cachePolicy: URLRequest.CachePolicy?
